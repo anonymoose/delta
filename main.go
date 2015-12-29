@@ -7,6 +7,14 @@ import (
 var config Config
 
 func main() {
+	config := InitConfig()
+
+	LoadOHLCFiles(config)
+
+	//ProcessOptionsFile(config)
+}
+
+func testBS() {
 	//config := initConfig()
 
 	//processFile(config)

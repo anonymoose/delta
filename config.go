@@ -5,12 +5,15 @@ import (
 )
 
 type Config struct {
-	filePath string
+	ohlcFilePath string
+	date         string
 }
 
-func initConfig() *Config {
-	config := &Config{filePath: ""}
-	flag.StringVar(&config.filePath, "path", "", "Readable path to options EOD file")
+func InitConfig() *Config {
+	config := &Config{ohlcFilePath: ""}
+	flag.StringVar(&config.ohlcFilePath, "ohlc", "", "Readable path to equity OHLC files")
+	flag.StringVar(&config.date, "date", "", "Date stamp for 'today' (20151228)")
+
 	flag.Parse()
 	return config
 }
