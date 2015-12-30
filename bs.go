@@ -83,12 +83,10 @@ func (self *Option) Initialize() {
 
 	// handle the rest of the greeks now that we know everything else.
 	if self.right == "C" {
-		self.price = self.S0*norm.Cdf(td1) - self.K*math.Exp(-self.r*self.T)*norm.Cdf(td2)
 		self.delta = norm.Cdf(td1)
 		self.gamma = (nPrime / (self.S0 * self.sigma * math.Pow(self.T, (1/2))))
 		self.theta = (nPrime)*(-self.S0*self.sigma*0.5/math.Sqrt(self.T)) - self.r*self.K*math.Exp(-self.r*self.T)*norm.Cdf(td2)
 	} else if self.right == "P" {
-		self.price = self.K*math.Exp(-self.r*self.T)*norm.Cdf(-td2) - self.S0*norm.Cdf(-td1)
 		self.delta = norm.Cdf(td1) - 1
 		self.gamma = (nPrime / (self.S0 * self.sigma * math.Pow(self.T, (1/2))))
 		self.theta = (nPrime)*(-self.S0*self.sigma*0.5/math.Sqrt(self.T)) + self.r*self.K*math.Exp(-self.r*self.T)*norm.Cdf(-td2)
@@ -98,8 +96,9 @@ func (self *Option) Initialize() {
 // use newton raphson method to find volatility
 func (self *Option) impliedVol() float64 {
 	norm := gaussian.NewGaussian(0, 1)
-	v := math.Sqrt(2*PI/self.T) * self.price / self.S0
-	//fmt.Printf("-- initial vol: %v\n", v)
+	//v := math.Sqrt(2*PI/self.T) * self.price / self.S0
+	v := 0.5
+
 	for i := 0; i < 100; i++ {
 		d1 := (math.Log(self.S0/self.K) + (self.r+0.5*math.Pow(v, 2))*self.T) / (v * math.Sqrt(self.T))
 		d2 := d1 - v*math.Sqrt(self.T)

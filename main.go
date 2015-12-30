@@ -1,51 +1,45 @@
 package main
 
 import (
-	"fmt"
+	"log"
 )
 
 var config Config
 
 func main() {
-	config := InitConfig()
-
-	LoadOHLCFiles(config)
-
-	//ProcessOptionsFile(config)
+	// config := InitConfig()
+	// equityQuotes := LoadOHLCFiles(config)
+	// log.Println(len(equityQuotes))
+	// ProcessOptionsFile(config, equityQuotes)
+	bstest()
 }
 
-func testBS() {
-	//config := initConfig()
+func bstest() {
 
-	//processFile(config)
+	S0 := 693.5
 
-	S0 := 15.45             // Underlying price
-	K := 17.0               // contract strike
-	exp_date := "20160115"  // expiration date
-	eval_date := "20151228" // "today"
-	r := 0.001              // risk free rate
-	vol := 0.525            // implied volatility
+	K := 640.0
+	right := "P"
+	price := 2.4
 
-	opt := NewOption("C", S0, K, eval_date, exp_date, r, vol, -1)
+	// K := 720.0
+	// right := "C"
+	// price := 4.5
 
-	fmt.Println("CALL")
-	fmt.Printf("Price: %v\n", opt.price)
-	fmt.Printf("Delta: %v\n", opt.delta)
-	fmt.Printf("Theta: %v\n", opt.theta)
-	fmt.Printf("Gamma: %v\n", opt.gamma)
+	// vol := 0.2939
+	// price := -1.0
+	vol := -1.0
 
-	opt = NewOption("C", S0, K, eval_date, exp_date, r, -1, 0.20)
-	fmt.Printf("Volatility: %v\n", opt.sigma)
+	r := 0.001 // risk free rate
+	eval_date := "20151230"
+	exp_date := "20160115"
 
-	// right = "P" // 'C' = call, 'P' = put
-	// opt = NewOption(right, S0, K, eval_date, exp_date, r, vol, -1)
+	opt := NewOption(right, S0, K, eval_date, exp_date, r, vol, price)
 
-	// fmt.Printf("Price %v: %v\n", opt.right, opt.price)
-	// fmt.Printf("Delta %v: %v\n", opt.right, opt.delta)
-	// fmt.Printf("Theta %v: %v\n", opt.right, opt.theta)
-	// fmt.Printf("Gamma %v: %v\n", opt.right, opt.gamma)
-
-	// opt = NewOption("P", S0, K, eval_date, exp_date, r, -1, 1.7622)
-	// fmt.Printf("Volatility %v: %v\n", opt.right, opt.sigma)
-
+	log.Println("CALL")
+	log.Printf("Price: %v\n", opt.price)
+	log.Printf("Delta: %v\n", opt.delta)
+	log.Printf("Theta: %v\n", opt.theta)
+	log.Printf("Gamma: %v\n", opt.gamma)
+	log.Printf("Volatility: %v\n", opt.sigma)
 }
