@@ -9,6 +9,8 @@ type Config struct {
 	date         string
 	deltaMin     float64
 	deltaMax     float64
+	priceMin     float64
+	priceMax     float64
 	volumeMin    int64
 	oiMin        int64
 }
@@ -20,8 +22,10 @@ func InitConfig() *Config {
 
 	flag.Float64Var(&config.deltaMin, "deltaMin", 10.0, "Minimum delta.")
 	flag.Float64Var(&config.deltaMax, "deltaMax", 15.0, "Maximum delta.")
-	flag.Int64Var(&config.volumeMin, "volumeMin", 100, "Minimum volume.")
-	flag.Int64Var(&config.oiMin, "oiMin", 1000, "Minimum open interest.")
+	flag.Float64Var(&config.priceMin, "priceMin", 0.15, "Minimum contract price.")
+	flag.Float64Var(&config.priceMax, "priceMax", 0.75, "Maximum contract price.")
+	flag.Int64Var(&config.volumeMin, "volumeMin", 25, "Minimum volume.")
+	flag.Int64Var(&config.oiMin, "oiMin", 200, "Minimum open interest.")
 
 	flag.Parse()
 	return config

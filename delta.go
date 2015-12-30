@@ -121,7 +121,7 @@ func parseOptionSymbol(symbol string) (sym string, yr string, mo string, day str
 func processOptionQuote(config *Config, optionQuote *Quote, equityQuotes map[string]*Quote) {
 	sym, yr, mo, day, right, strikeDollars, strikeCents := parseOptionSymbol(optionQuote.symbol)
 
-	if equityQuotes[sym] == nil || sym == "" {
+	if equityQuotes[sym] == nil || sym == "" || optionQuote.vol < config.volumeMin {
 		// can't find it in symbols.  skip it.
 		return
 	}
@@ -134,18 +134,19 @@ func processOptionQuote(config *Config, optionQuote *Quote, equityQuotes map[str
 
 	opt := NewOption(right, S0, K, eval_date, exp_date, r, -1, optionQuote.close)
 
-	//aDelta := math.Abs(opt.delta) * 100
+	aDelta := math.Abs(opt.delta) * 100
 
-	// if aDelta > config.deltaMin && aDelta < config.deltaMax && optionQuote.vol > config.volumeMin && optionQuote.oi > config.oiMin {
-	//if ("P" == right && K > S0) || ("C" == right && K < S0) {
-	//if "P" == right && S0 > K {
-	if math.IsNaN(opt.sigma) {
-		log.Printf("nan")
+	//	if aDelta > config.deltaMin && aDelta < config.deltaMax && optionQuote.vol > config.volumeMin && optionQuote.oi > config.oiMin {
+	//log.Printf("%v %v %v\n", optionQuote.vol, aDelta, optionQuote.symbol)
+	if aDelta > config.deltaMin && aDelta < config.deltaMax && optionQuote.oi > config.oiMin && optionQuote.close > config.priceMin && optionQuote.close < config.priceMax {
+
+		if math.IsNaN(opt.sigma) {
+			log.Printf("nan")
+		}
+		log.Printf("%v %v %v %v %v %v underlying: %f strike: %f price: %f delta: %f vol: %f symbol: %v\n",
+			optionQuote.vol, optionQuote.oi, sym, right, K, exp_date, S0, K, optionQuote.close, opt.delta, opt.sigma, optionQuote.symbol)
+		//}
 	}
-	log.Printf("%v %v %v %v underlying: %f strike: %f price: %f delta: %f vol: %f symbol: %v\n",
-		sym, right, K, exp_date, S0, K, optionQuote.close, opt.delta, opt.sigma, optionQuote.symbol)
-	//}
-	//}
 	// fmt.Println("CALL")
 	// fmt.Printf("Price: %v\n", opt.price)
 	// fmt.Printf("Delta: %v\n", opt.delta)
