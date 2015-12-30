@@ -51,12 +51,12 @@ func calculateT(eval_date string, exp_date string) float64 {
 	return (expDt.Sub(evalDt).Hours() / 24) / 365.0
 }
 
-func (self *Option) d1() float64 {
-	return (math.Log(self.S0/self.K) + (self.r+math.Pow(self.sigma, 2)/2)*self.T) / (self.sigma * math.Sqrt(self.T))
+func d1(S0 float64, K float64, T float64, r float64, sigma float64) float64 {
+	return (math.Log(S0/K) + (r+math.Pow(sigma, 2)/2)*T) / (sigma * math.Sqrt(T))
 }
 
-func (self *Option) d2() float64 {
-	return (math.Log(self.S0/self.K) + (self.r-math.Pow(self.sigma, 2)/2)*self.T) / (self.sigma * math.Sqrt(self.T))
+func d2(S0 float64, K float64, T float64, r float64, sigma float64) float64 {
+	return (math.Log(S0/K) + (r-math.Pow(sigma, 2)/2)*T) / (sigma * math.Sqrt(T))
 }
 
 const PI float64 = 3.14159265359
@@ -65,10 +65,12 @@ const PI float64 = 3.14159265359
 func (self *Option) Initialize() {
 	norm := gaussian.NewGaussian(0, 1)
 
-	td1 := self.d1()
-	td2 := self.d2()
+	if self.sigma < 0 {
+		self.sigma = self.impliedVol()
+	}
 
-	nPrime := math.Pow((2*PI), -(1/2)) * math.Exp(math.Pow(-0.5*(td1), 2))
+	td1 := d1(self.S0, self.K, self.T, self.r, self.sigma)
+	td2 := d2(self.S0, self.K, self.T, self.r, self.sigma)
 
 	// we know volatility and want a price, or we're guessing at volatility and we want a price.
 	if self.price < 0 {
@@ -77,9 +79,9 @@ func (self *Option) Initialize() {
 		} else if self.right == "P" {
 			self.price = self.K*math.Exp(-self.r*self.T)*norm.Cdf(-td2) - self.S0*norm.Cdf(-td1)
 		}
-	} else if self.sigma < 0 {
-		self.sigma = self.impliedVol()
 	}
+
+	nPrime := math.Pow((2*PI), -(1/2)) * math.Exp(-0.5*math.Pow(td1, 2))
 
 	// handle the rest of the greeks now that we know everything else.
 	if self.right == "C" {
