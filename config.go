@@ -5,19 +5,22 @@ import (
 )
 
 type Config struct {
-	ohlcFilePath string
-	date         string
-	deltaMin     float64
-	deltaMax     float64
-	priceMin     float64
-	priceMax     float64
-	volumeMin    int64
-	oiMin        int64
+	action    string
+	dataPath  string
+	date      string
+	deltaMin  float64
+	deltaMax  float64
+	priceMin  float64
+	priceMax  float64
+	volumeMin int64
+	oiMin     int64
+	expDate   string
 }
 
 func InitConfig() *Config {
-	config := &Config{ohlcFilePath: ""}
-	flag.StringVar(&config.ohlcFilePath, "ohlc", "", "Readable path to equity OHLC files")
+	config := &Config{}
+	flag.StringVar(&config.action, "action", "optionScan", "What do you want to do?")
+	flag.StringVar(&config.dataPath, "dataPath", "", "Readable path to data file root")
 	flag.StringVar(&config.date, "date", "", "Date stamp for 'today' (20151228)")
 
 	flag.Float64Var(&config.deltaMin, "deltaMin", 10.0, "Minimum delta.")
@@ -26,6 +29,7 @@ func InitConfig() *Config {
 	flag.Float64Var(&config.priceMax, "priceMax", 0.75, "Maximum contract price.")
 	flag.Int64Var(&config.volumeMin, "volumeMin", 25, "Minimum volume.")
 	flag.Int64Var(&config.oiMin, "oiMin", 200, "Minimum open interest.")
+	flag.StringVar(&config.expDate, "expDate", "", "Expiration date (optional)")
 
 	flag.Parse()
 	return config
