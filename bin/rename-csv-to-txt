@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in `find ./data/quotes/src -name "*.csv"`
+do
+        BASE=`echo $i | sed 's/.csv/.txt/'`
+        echo $i $BASE
+        mv $i $BASE
+done

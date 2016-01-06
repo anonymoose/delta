@@ -1,0 +1,18 @@
+#!/bin/bash
+
+cd `dirname $0`/..
+source `dirname $0`/.password
+export USR
+export PWD
+export POSTGRESQL_URL
+
+export QUOTES_SRC=data/quotes/src
+export QUOTES_DB=data/quotes/db
+export META_NAMES_SRC=data/meta/src/names
+export META_FUNDAMENTALS_SRC=data/meta/src/fundamentals
+export META_TECHNICAL_SRC=data/meta/src/technical
+
+#set -x
+`dirname $0`/ftp-get
+`dirname $0`/load-db
+`dirname $0`/process

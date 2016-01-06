@@ -1,0 +1,28 @@
+#!/bin/bash
+
+cd `dirname $0`/..
+source `dirname $0`/.password
+export USR
+export PWD
+export POSTGRESQL_URL
+
+export QUOTES_SRC=data/quotes/src
+export QUOTES_DB=data/quotes/db
+export META_NAMES_SRC=data/meta/src/names
+export META_FUNDAMENTALS_SRC=data/meta/src/fundamentals
+export META_TECHNICAL_SRC=data/meta/src/technical
+
+
+EXCHANGES=`ls -1 $QUOTES_SRC | sed 's/_.*//' | sort | uniq`
+
+
+
+for e in $EXCHANGES
+do
+    # move everything into position
+    echo $QUOTES_DB/$e
+    mkdir $QUOTES_DB/$e > /dev/null 2>&1
+    rsync -a $QUOTES_SRC/${e}_*.txt $QUOTES_DB/$e
+done
+
+lein exec -ep "(use '[pickr.data.process]) (load-db)"

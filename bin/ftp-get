@@ -1,0 +1,86 @@
+#!/bin/bash
+cd `dirname $0`/..
+source `dirname $0`/.password
+export USR
+export PWD
+export POSTGRESQL_URL
+
+export QUOTES_SRC=data/quotes/src
+export QUOTES_DB=data/quotes/db
+export META_NAMES_SRC=data/meta/src/names
+export META_FUNDAMENTALS_SRC=data/meta/src/fundamentals
+export META_TECHNICAL_SRC=data/meta/src/technical
+
+mkdir -p $QUOTES_SRC
+mkdir -p $QUOTES_DB
+mkdir -p $META_NAMES_SRC
+mkdir -p $META_FUNDAMENTALS_SRC
+mkdir -p $META_TECHNICAL_SRC
+
+
+#set -x
+`dirname $0`/rename-csv-to-txt
+
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/AMEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/CBOT_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/CFE_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/COMEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/FOREX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/INDEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/NASDAQ_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/NYBOT_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/NYMEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/NYSE_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /History/OPRA_*.txt ; sleep 2
+
+
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /AMEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /CBOT_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /CFE_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /COMEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /FOREX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /INDEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /NASDAQ_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /NYBOT_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /NYMEX_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /NYSE_*.txt ; sleep 2
+ncftpget -u $USR -p $PWD ftp.eoddata.com $QUOTES_SRC /OPRA_*.txt ; sleep 2
+
+`dirname $0`/rename-csv-to-txt
+
+mkdir -p $META_NAMES_SRC
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/AMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/CBOT.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/CFE.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/COMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/FOREX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/INDEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/NASDAQ.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/NYBOT.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/NYMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/NYSE.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_NAMES_SRC /Names/OPRA.txt
+
+mkdir -p $META_FUNDAMENTALS_SRC
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/AMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/CBOT.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/CFE.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/COMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/FOREX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/INDEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/NASDAQ.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/NYBOT.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/NYMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_FUNDAMENTALS_SRC /Fundamentals/NYSE.txt
+
+mkdir -p $META_TECHNICAL_SRC
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/AMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/CBOT.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/CFE.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/COMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/FOREX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/INDEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/NASDAQ.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/NYBOT.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/NYMEX.txt
+ncftpget -u $USR -p $PWD ftp.eoddata.com $META_TECHNICAL_SRC /Technical/NYSE.txt

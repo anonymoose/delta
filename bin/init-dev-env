@@ -1,0 +1,8 @@
+#!/bin/bash
+# http://www.pgrs.net/2011/10/30/using-local-jars-with-leiningen/
+# https://gist.github.com/stuartsierra/3062743
+set -x
+
+mvn deploy:deploy-file -Dfile=lib-ext/clj-ta-lib-0.0.1.jar -DartifactId=clj-ta-lib -Dversion=0.0.1 -DgroupId=clj-ta-lib -Dpackaging=jar -Durl=file:local_repo
+
+lein deps
