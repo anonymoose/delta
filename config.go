@@ -20,7 +20,7 @@ type Config struct {
 func InitConfig() *Config {
 	config := &Config{}
 	flag.StringVar(&config.action, "action", "optionScan", "What do you want to do?")
-	flag.StringVar(&config.dataPath, "dataPath", "", "Readable path to data file root")
+	flag.StringVar(&config.dataPath, "dataPath", "./data", "Readable path to data file root")
 	flag.StringVar(&config.date, "date", "", "Date stamp for 'today' (20151228)")
 
 	flag.Float64Var(&config.deltaMin, "deltaMin", 10.0, "Minimum delta.")
